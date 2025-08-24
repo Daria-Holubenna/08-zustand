@@ -1,9 +1,8 @@
 'use client';
 import css from './NoteForm.module.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createNote } from '@/lib/api';
+import { createNote} from '@/lib/api';
 import toast from 'react-hot-toast';
-import { NoteTag } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import { useDraftStore } from '@/lib/store/noteStore';
 
@@ -11,9 +10,25 @@ export default function NoteForm() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { draft, setDraft, clearDraft } = useDraftStore();
+  interface NoteTag {
+    title: string;
+    content: string;
+    tag: TagType;
+  }
+  type TagType = 'Todo' | 'Work' | 'Shopping' | 'Personal' | 'Meeting';
   const handleSubmit = async (formData: FormData) => {
-    const values = Object.fromEntries(formData) as unknown as NoteTag;
-    mutate(values);
+       const values = Object.fromEntries(formData);
+    const { title, content, tag } = values;
+    const newNoteData: NoteTag = {
+      title: title as string,
+      content: content as string,
+      tag: tag as TagType,
+    };
+   if (!title || !content || !tag) {
+      toast.error('Title, content, and tag are required.');
+      return;
+    }
+    mutate(newNoteData);
   };
   const { mutate, isPending } = useMutation({
     mutationFn: (newNoteData: NoteTag) => createNote(newNoteData),
@@ -46,7 +61,7 @@ export default function NoteForm() {
           type="text"
           name="title"
           className={css.input}
-          defaultValue={draft?.title}
+          value={draft?.title}
           onChange={handleChange}
         />
       </div>
@@ -56,7 +71,7 @@ export default function NoteForm() {
           id="content"
           name="content"
           rows={8}
-          defaultValue={draft?.content}
+          value={draft?.content}
           onChange={handleChange}
           className={css.textarea}
         />
@@ -67,7 +82,7 @@ export default function NoteForm() {
           id="tag"
           name="tag"
           className={css.select}
-          defaultValue={draft.tag}
+          value={draft.tag}
           onChange={handleChange}
         >
           <option value="Todo">Todo</option>
