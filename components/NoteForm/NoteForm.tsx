@@ -20,7 +20,7 @@ export default function NoteForm() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       clearDraft();
-      router.push('./notes/filter/All');
+      router.push('/notes/filter/All');
     },
     onError: error => {
       console.error('Ошибка создания заметки:', error);
