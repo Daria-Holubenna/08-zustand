@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Page Not Found',
     description: 'Unfortunately, this page does not exist.',
-    url: 'https://07-routing-nextjs-rosy-iota.vercel.app/404',
+    url: 'https://08-zustand-git-main-daria-hs-projects.vercel.app/404',
     images: [
       {
         url: 'https://static.vecteezy.com/system/resources/previews/010/886/263/non_2x/404-error-page-free-download-free-vector.jpg',
